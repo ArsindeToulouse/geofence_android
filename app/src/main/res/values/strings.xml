@@ -1,0 +1,4 @@
+<resources>
+    <string name="app_name">GeoFence4</string>
+    <string name="remove_location_alerts">Remove Location Alerts</string>
+</resources>

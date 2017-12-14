@@ -10,11 +10,11 @@ import android.support.annotation.NonNull;
 import android.util.Log;
 import android.widget.Toast;
 
-import com.arsinde.geofence.AppConstants;
+import com.arsinde.geofence.common.AppConstants;
 import com.arsinde.geofence.interfaces.GeofenceObserver;
 import com.arsinde.geofence.interfaces.GeofencePublisher;
-import com.arsinde.geofence.LocationAlertIntentService;
-import com.arsinde.geofence.Permissions;
+import com.arsinde.geofence.app.LocationAlertIntentService;
+import com.arsinde.geofence.common.Permissions;
 import com.google.android.gms.location.FusedLocationProviderClient;
 import com.google.android.gms.location.Geofence;
 import com.google.android.gms.location.GeofencingClient;

@@ -1,4 +1,4 @@
-package com.arsinde.geofence;
+package com.arsinde.geofence.app;
 
 import android.app.IntentService;
 import android.app.NotificationManager;
@@ -10,6 +10,8 @@ import android.support.v4.app.NotificationCompat;
 import android.text.TextUtils;
 import android.util.Log;
 
+import com.arsinde.geofence.common.AppConstants;
+import com.arsinde.geofence.R;
 import com.google.android.gms.location.Geofence;
 import com.google.android.gms.location.GeofenceStatusCodes;
 import com.google.android.gms.location.GeofencingEvent;
@@ -17,8 +19,6 @@ import com.google.android.gms.location.GeofencingEvent;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
-
-import static android.content.ContentValues.TAG;
 
 public class LocationAlertIntentService extends IntentService {
     private static final String IDENTIFIER = "LocationAlertIS";
@@ -54,7 +54,6 @@ public class LocationAlertIntentService extends IntentService {
             String transitionType = getTransitionString(geofenceTransition);
 
             Intent mainIntent = new Intent(AppConstants.BROADCAST_ACTION);
-            mainIntent.putExtra(AppConstants.BROADCAST_ACTION_ALERT, AppConstants.BROADCAST_ACTION_ALERT_ID);
             mainIntent.putExtra(AppConstants.TRANSITION_TYPE,transitionType);
             mainIntent.putExtra(AppConstants.TRANSITION_DETAILS, transitionDetails);
             sendBroadcast(mainIntent);

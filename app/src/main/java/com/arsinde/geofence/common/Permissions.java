@@ -1,4 +1,4 @@
-package com.arsinde.geofence;
+package com.arsinde.geofence.common;
 
 import android.Manifest;
 import android.app.Activity;

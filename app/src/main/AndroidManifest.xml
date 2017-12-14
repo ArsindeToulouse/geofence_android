@@ -17,7 +17,7 @@
         <meta-data
             android:name="com.google.android.geo.API_KEY"
             android:value="AIzaSyCorxBDtMQzz87fmuDRLb8hdUTsNg2rWS4"/>
-        <activity android:name="com.arsinde.geofence.LocationAlertActivity">
+        <activity android:name="com.arsinde.geofence.app.LocationAlertActivity">
 
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -25,7 +25,7 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <service android:name="com.arsinde.geofence.LocationAlertIntentService" android:allowBackup="true" />
+        <service android:name="com.arsinde.geofence.app.LocationAlertIntentService" android:allowBackup="true" />
     </application>
 
 </manifest>

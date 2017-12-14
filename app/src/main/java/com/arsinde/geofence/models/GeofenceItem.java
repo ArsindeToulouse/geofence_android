@@ -166,6 +166,24 @@ public class GeofenceItem implements GeofencePublisher {
         }
     }
 
+    @Override
+    public void addObserver(GeofenceObserver activity) {
+        mList.add(activity);
+    }
+
+    @Override
+    public void removeObserver(GeofenceObserver activity) {
+        mList.remove(activity);
+    }
+
+    @Override
+    public void notifyObserver() {
+        Log.e(TAG, "");
+        for (GeofenceObserver observer : mList) {
+            observer.getNotification(mLatitude, mLongitude);
+        }
+    }
+
     private PendingIntent getGeofencePendingIntent() {
         Intent intent = new Intent(mActivity, LocationAlertIntentService.class);
         return PendingIntent.getService(mContext, 0, intent,
@@ -191,23 +209,5 @@ public class GeofenceItem implements GeofencePublisher {
                         Geofence.GEOFENCE_TRANSITION_EXIT)
                 .setLoiteringDelay(AppConstants.LOITERING_DELAY_IN_MILLISEC)
                 .build();
-    }
-
-    @Override
-    public void addObserver(GeofenceObserver activity) {
-        mList.add(activity);
-    }
-
-    @Override
-    public void removeObserver(GeofenceObserver activity) {
-        mList.remove(activity);
-    }
-
-    @Override
-    public void notifyObserver() {
-        Log.e(TAG, "");
-        for (GeofenceObserver observer : mList) {
-            observer.getNotification(mLatitude, mLongitude);
-        }
     }
 }

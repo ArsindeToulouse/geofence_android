@@ -56,48 +56,8 @@ public class LocationAlertActivity extends AppCompatActivity
         mTvLatitude = findViewById(R.id.tv_latitude);
         mTvLongitude = findViewById(R.id.tv_longitude);
 
-        mBroadcastReceiver = new BroadcastReceiver() {
-            @Override
-            public void onReceive(Context context, Intent intent) {
-                String transitionInfo = intent.getStringExtra(AppConstants.TRANSITION_TYPE) + ": " +
-                        intent.getStringExtra(AppConstants.TRANSITION_DETAILS);
-
-                mTvTransitionDetails.setText(transitionInfo);
-            }
-        };
-        IntentFilter intentFilter = new IntentFilter(AppConstants.BROADCAST_ACTION);
-        registerReceiver(mBroadcastReceiver, intentFilter);
-
-        mGeofenceItem = new GeofenceItem(this, this);
-        mGeofenceItem.addObserver(this);
-        mGeofenceItem.getLastDeviceLocation();
-        mRequestingLocationUpdates = mGeofenceItem.createLocationRequest();
-        mGeofenceItem.getLocationCallback();
-
-    }
-
-    @Override
-    protected void onResume() {
-        super.onResume();
-
-        if (mRequestingLocationUpdates) {
-            mGeofenceItem.startLocationUpdate();
-        }
-    }
-
-    @Override
-    protected void onPause() {
-        super.onPause();
-
-        mGeofenceItem.stopLocationUpdate();
-        mRequestingLocationUpdates = false;
-    }
-
-    @Override
-    protected void onDestroy() {
-        super.onDestroy();
-        unregisterReceiver(mBroadcastReceiver);
-        mGeofenceItem.removeObserver(this);
+        getBroadCast();
+        getGeofenceItem();
     }
 
     @Override
@@ -115,15 +75,6 @@ public class LocationAlertActivity extends AppCompatActivity
                 mGeofenceItem.addLocationAlert(latLng.latitude, latLng.longitude);
             }
         });
-    }
-
-    @SuppressLint("MissingPermission")
-    private void showCurrentLocationOnMap() {
-        if (Permissions.isLocationAccessPermitted(this)) {
-            Permissions.requestLocationAccessPermission(this);
-        } else if (mMap != null) {
-            mMap.setMyLocationEnabled(true);
-        }
     }
 
     @Override
@@ -151,6 +102,7 @@ public class LocationAlertActivity extends AppCompatActivity
         inflater.inflate(R.menu.menu, menu);
         return true;
     }
+
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
@@ -171,5 +123,60 @@ public class LocationAlertActivity extends AppCompatActivity
         mTvLatitude.setText(String.valueOf(lat));
         mTvLongitude.setVisibility(View.VISIBLE);
         mTvLongitude.setText(String.valueOf(lng));
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+
+        if (mRequestingLocationUpdates) {
+            mGeofenceItem.startLocationUpdate();
+        }
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+
+        mGeofenceItem.stopLocationUpdate();
+        mRequestingLocationUpdates = false;
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        unregisterReceiver(mBroadcastReceiver);
+        mGeofenceItem.removeObserver(this);
+    }
+
+    @SuppressLint("MissingPermission")
+    private void showCurrentLocationOnMap() {
+        if (Permissions.isLocationAccessPermitted(this)) {
+            Permissions.requestLocationAccessPermission(this);
+        } else if (mMap != null) {
+            mMap.setMyLocationEnabled(true);
+        }
+    }
+
+    private void getGeofenceItem() {
+        mGeofenceItem = new GeofenceItem(this, this);
+        mGeofenceItem.addObserver(this);
+        mGeofenceItem.getLastDeviceLocation();
+        mRequestingLocationUpdates = mGeofenceItem.createLocationRequest();
+        mGeofenceItem.getLocationCallback();
+    }
+
+    private void getBroadCast() {
+        mBroadcastReceiver = new BroadcastReceiver() {
+            @Override
+            public void onReceive(Context context, Intent intent) {
+                String transitionInfo = intent.getStringExtra(AppConstants.TRANSITION_TYPE) + ": " +
+                        intent.getStringExtra(AppConstants.TRANSITION_DETAILS);
+
+                mTvTransitionDetails.setText(transitionInfo);
+            }
+        };
+        IntentFilter intentFilter = new IntentFilter(AppConstants.BROADCAST_ACTION);
+        registerReceiver(mBroadcastReceiver, intentFilter);
     }
 }

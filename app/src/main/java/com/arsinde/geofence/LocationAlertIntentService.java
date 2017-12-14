@@ -18,8 +18,11 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
 
+import static android.content.ContentValues.TAG;
+
 public class LocationAlertIntentService extends IntentService {
     private static final String IDENTIFIER = "LocationAlertIS";
+    private static final String TAG = LocationAlertIntentService.class.getCanonicalName();
 
     public LocationAlertIntentService() {
         super(IDENTIFIER);
@@ -40,7 +43,8 @@ public class LocationAlertIntentService extends IntentService {
         int geofenceTransition = geofencingEvent.getGeofenceTransition();
 
         if (geofenceTransition == Geofence.GEOFENCE_TRANSITION_ENTER ||
-                geofenceTransition == Geofence.GEOFENCE_TRANSITION_DWELL) {
+                geofenceTransition == Geofence.GEOFENCE_TRANSITION_DWELL ||
+                geofenceTransition == Geofence.GEOFENCE_TRANSITION_EXIT) {
 
             List<Geofence> triggeringGeofences = geofencingEvent.getTriggeringGeofences();
 
@@ -49,6 +53,13 @@ public class LocationAlertIntentService extends IntentService {
 
             String transitionType = getTransitionString(geofenceTransition);
 
+            Intent mainIntent = new Intent(AppConstants.BROADCAST_ACTION);
+            mainIntent.putExtra(AppConstants.BROADCAST_ACTION_ALERT, AppConstants.BROADCAST_ACTION_ALERT_ID);
+            mainIntent.putExtra(AppConstants.TRANSITION_TYPE,transitionType);
+            mainIntent.putExtra(AppConstants.TRANSITION_DETAILS, transitionDetails);
+            sendBroadcast(mainIntent);
+
+            Log.e(TAG, "Transition type: " + transitionType + "; Transition details: " + transitionDetails);
 
             notifyLocationAlert(transitionType, transitionDetails);
         }

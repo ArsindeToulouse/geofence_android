@@ -1,4 +1,4 @@
-package com.arsinde.geofence;
+package com.arsinde.geofence.app;
 
 import android.annotation.SuppressLint;
 import android.content.BroadcastReceiver;
@@ -18,6 +18,9 @@ import android.view.View;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.arsinde.geofence.common.AppConstants;
+import com.arsinde.geofence.R;
+import com.arsinde.geofence.common.Permissions;
 import com.arsinde.geofence.interfaces.GeofenceObserver;
 import com.arsinde.geofence.models.GeofenceItem;
 import com.google.android.gms.maps.GoogleMap;

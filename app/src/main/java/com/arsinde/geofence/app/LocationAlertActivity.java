@@ -23,10 +23,14 @@ import com.arsinde.geofence.R;
 import com.arsinde.geofence.common.Permissions;
 import com.arsinde.geofence.interfaces.GeofenceObserver;
 import com.arsinde.geofence.models.GeofenceItem;
+import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
+import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.MarkerOptions;
+import com.google.maps.android.ui.IconGenerator;
 
 public class LocationAlertActivity extends AppCompatActivity
         implements OnMapReadyCallback, GeofenceObserver {
@@ -71,6 +75,7 @@ public class LocationAlertActivity extends AppCompatActivity
         mMap.setMinZoomPreference(15);
 
         showCurrentLocationOnMap();
+        showStartLocation();
 
         mMap.setOnMapClickListener(new GoogleMap.OnMapClickListener() {
             @Override
@@ -78,6 +83,22 @@ public class LocationAlertActivity extends AppCompatActivity
                 mGeofenceItem.addLocationAlert(latLng.latitude, latLng.longitude);
             }
         });
+    }
+
+    private void showStartLocation() {
+        IconGenerator iconFactory = new IconGenerator(this);
+        iconFactory.setStyle(IconGenerator.STYLE_BLUE);
+        iconFactory.setTextAppearance(R.style.MapMarker);
+
+        if (mMap != null) {
+            LatLng currentLocation = new LatLng(55.890207, 37.441053);
+
+            mMap.addMarker(new MarkerOptions()
+                    .position(currentLocation)
+                    .icon(BitmapDescriptorFactory.fromBitmap(iconFactory
+                            .makeIcon("1"))));
+            mMap.moveCamera(CameraUpdateFactory.newLatLng(currentLocation));
+        }
     }
 
     @Override
